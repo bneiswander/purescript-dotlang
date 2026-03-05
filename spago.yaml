@@ -1,21 +1,19 @@
+workspace:
+  packageSet:
+    registry: 73.3.0
+  extraPackages: {}
 package:
   dependencies:
-  - arrays
-  - colors
-  - console
-  - effect
-  - maybe
-  - prelude
-  - psci-support
-  - strings
+    - arrays
+    - colors
+    - console
+    - effect
+    - maybe
+    - prelude
+    - psci-support
+    - strings
   name: dotlang
   test:
     main: Test.Main
     dependencies:
       - spec
-workspace:
-  # package_set:
-  #   url: https://raw.githubusercontent.com/purescript/package-sets/psc-0.15.4-20221127/packages.json
-  packageSet:
-    registry: 65.1.0
-  extraPackages: {}
