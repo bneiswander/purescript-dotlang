@@ -60,6 +60,7 @@ data Attr
   | FillColor Color
   | PenWidth Number
   | ArrowHead ArrowHeadStyle
+  | Id String
 
 instance attrDotLang :: DotLang Attr where
   toText (Color s) = "color=\"" <> toHexString s <> "\""
@@ -71,6 +72,7 @@ instance attrDotLang :: DotLang Attr where
   toText (FillColor c) = "fillcolor=\"" <> toHexString c <> "\""
   toText (PenWidth i) = "penwidth=" <> show i
   toText (ArrowHead s) = "arrowhead=" <> toText s
+  toText (Id s) = "id=" <> show s
 
 -- |
 --| ```purescript run

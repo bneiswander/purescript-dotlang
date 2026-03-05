@@ -42,17 +42,16 @@ renderLabel = case _ of
   HtmlLabel t -> t
   RecordLabel recordValue -> show $ renderRecordLabelValue recordValue
 
-
 data RecordLabelValue
-  = SubRecord (Array {fieldId:: Maybe String, value:: RecordLabelValue})
+  = SubRecord (Array { fieldId :: Maybe String, value :: RecordLabelValue })
   | Base String
 
 renderRecordLabelValue :: RecordLabelValue -> String
 renderRecordLabelValue = case _ of
   SubRecord parts -> joinWith " | " $ map renderPart parts
     where
-      renderPart {fieldId, value} = brace "{" "}" $ (maybe "" (brace "<" ">") fieldId) <> renderRecordLabelValue value
-      brace left right str =  left <> str <> right
+    renderPart { fieldId, value } = brace "{" "}" $ (maybe "" (brace "<" ">") fieldId) <> renderRecordLabelValue value
+    brace left right str = left <> str <> right
   Base str -> str
 
 data Attr
@@ -66,6 +65,7 @@ data Attr
   | Style Style
   | FillColor Color
   | PenWidth Number
+  | Id String
 
 instance attrDotLang :: DotLang Attr where
   toText (Margin i) = "margin=" <> show i
@@ -78,6 +78,7 @@ instance attrDotLang :: DotLang Attr where
   toText (Label l) = "label=" <> renderLabel l
   toText (FillColor c) = "fillcolor=\"" <> toHexString c <> "\""
   toText (PenWidth i) = "penwidth=" <> show i
+  toText (Id s) = "id=" <> show s
 
 -- | possible node shapes
 data ShapeType
@@ -231,14 +232,14 @@ label = TextLabel >>> Label
 --| "a [label=\"{<test>c} | {d} | {{k} | {l}}\"]; "
 --| ```
 -- |
-recordLabel :: Array {fieldId:: Maybe String, value:: RecordLabelValue} -> Attr
+recordLabel :: Array { fieldId :: Maybe String, value :: RecordLabelValue } -> Attr
 recordLabel = SubRecord >>> RecordLabel >>> Label
 
-subRecord :: Array {fieldId:: Maybe String, value:: RecordLabelValue} -> {fieldId:: Maybe String, value:: RecordLabelValue}
-subRecord v = {fieldId: Nothing, value: SubRecord v }
+subRecord :: Array { fieldId :: Maybe String, value :: RecordLabelValue } -> { fieldId :: Maybe String, value :: RecordLabelValue }
+subRecord v = { fieldId: Nothing, value: SubRecord v }
 
-subLabel :: String -> {fieldId :: Maybe String, value :: RecordLabelValue}
-subLabel value = {fieldId : Nothing, value: Base value }
+subLabel :: String -> { fieldId :: Maybe String, value :: RecordLabelValue }
+subLabel value = { fieldId: Nothing, value: Base value }
 
-subId :: String -> {fieldId :: Maybe String, value :: RecordLabelValue} ->{fieldId :: Maybe String, value :: RecordLabelValue}
-subId str {value} = {fieldId: Just str, value: value}
+subId :: String -> { fieldId :: Maybe String, value :: RecordLabelValue } -> { fieldId :: Maybe String, value :: RecordLabelValue }
+subId str { value } = { fieldId: Just str, value: value }
